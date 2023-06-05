@@ -3,12 +3,36 @@
     <b-row>
       <b-col>
         <b-table
-          id="my-table"
           :items="list"
+          :busy="loader"
           :per-page="configPagination.perPage"
           :current-page="configPagination.current_page"
           small
-        ></b-table>
+        >
+          <template #table-busy>
+            <div class="text-center text-danger my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong>Loading...</strong>
+            </div>
+          </template>
+
+          <template #cell(actions)="data">
+            <b-button
+              size="sm"
+              variant="outline-primary"
+              @click="onEdit(data.item)"
+            >
+              <b-icon-pencil aria-hidden="true"></b-icon-pencil>
+            </b-button>
+            <b-button
+              size="sm"
+              variant="outline-primary"
+              @click="onRemove(data.item)"
+            >
+              <b-icon-trash aria-hidden="true"></b-icon-trash>
+            </b-button>
+          </template>
+        </b-table>
         <b-pagination
           v-model="configPagination.current_page"
           :total-rows="list.length"
@@ -22,6 +46,7 @@
 
 <script>
 import { mapActions, mapState } from 'Vuex'
+
 export default {
   data() {
     return {
@@ -53,6 +78,12 @@ export default {
     ...mapActions('list', {
       getList: 'LIST',
     }),
+    onEdit(editItem) {
+      console.log(editItem)
+    },
+    onRemove(editItem) {
+      console.log(editItem)
+    },
   },
 }
 </script>
