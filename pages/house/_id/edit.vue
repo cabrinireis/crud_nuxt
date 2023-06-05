@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'Vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   components: {
     HouseForm: () => import('@/components/FormHouse.vue'),

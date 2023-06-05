@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'Vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   props: {
     mode: {
