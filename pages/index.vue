@@ -42,7 +42,7 @@
       </b-col>
     </b-row>
     <b-modal v-model="modalShow" hide-footer :title="title">
-      <HouseForm :data="form" @closeModal="modalShow = !modalShow" />
+      <HouseForm :id="id" :data="form" @closeModal="modalShow = !modalShow" />
     </b-modal>
   </b-container>
 </template>
@@ -58,6 +58,7 @@ export default {
     return {
       title: '',
       modalShow: false,
+      id: '',
       form: {},
       configPagination: {
         total: 1,
@@ -69,7 +70,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('list', {
+    ...mapState('list_house', {
       loader: 'loading',
       list: 'list',
       pagination: 'pagination',
@@ -83,12 +84,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions('list', {
+    ...mapActions('list_house', {
       getList: 'LIST',
     }),
-    onEdit(editItem) {
-      this.form = editItem
-      this.title = `Edit house: ${editItem.id}`
+    onEdit({ name, active, id }) {
+      this.id = id
+      this.form = { name, active }
+      this.title = `Edit house: ${id}`
       this.modalShow = !this.modalShow
     },
     onRemove(editItem) {
