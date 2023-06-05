@@ -3,6 +3,7 @@
     <b-navbar toggleable type="dark" variant="dark" class="mb-5">
       <b-navbar-brand href="#">Home roules</b-navbar-brand>
       <b-button
+        v-if="!isHome"
         type="reset"
         class="mr-3"
         variant="secondary"
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'Vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -35,6 +36,9 @@ export default {
     }
   },
   computed: {
+    isHome() {
+      return this.$route.path === '/'
+    },
     ...mapState('notification', ['notification']),
   },
 
