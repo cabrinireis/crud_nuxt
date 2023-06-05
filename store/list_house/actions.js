@@ -14,24 +14,21 @@ export default {
       })
   },
 
-  async UPDATE_HOUSE({ commit }, params) {
+  async UPDATE_HOUSE({ commit, dispatch }, params) {
     commit('SET_LOADING', true)
     await this.$axios
       .put(
         `/api/admin/house_rules/${params.id}`,
         (params = { house_rules: params.params })
       )
-      .then((data) => {
+      .then(() => {
         commit(
           'notification/SET_NOTIFICATION',
           ['success', 'Sucesso', 'Cupom atualizado com sucesso'],
           { root: true }
         )
-        // if (data.success)
-        // dispatch('LIST')
-      })
-      .catch((err) => {
-        console.log(err)
+        this.$router.push('/')
+        dispatch('LIST')
       })
       .finally(() => {
         commit('SET_LOADING', false)

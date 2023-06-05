@@ -82,9 +82,8 @@ export default {
     onClose() {
       this.$emit('closeModal')
     },
-    async onSave(event) {
+    async onSave() {
       await this.update({ params: this.form, id: this.$route.params.id })
-      // this.$router.push('/')
     },
   },
 }
