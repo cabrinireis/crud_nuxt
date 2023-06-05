@@ -17,13 +17,12 @@
           </template>
 
           <template #cell(actions)="data">
-            <b-button
-              size="sm"
-              variant="outline-primary"
-              @click="onEdit(data.item)"
-            >
+            <nuxt-link :to="`house/${data.item.id}/show`" class="mr-2">
+              <b-icon-eye aria-hidden="true"></b-icon-eye>
+            </nuxt-link>
+            <nuxt-link :to="`house/${data.item.id}/edit`" class="mr-2">
               <b-icon-pencil aria-hidden="true"></b-icon-pencil>
-            </b-button>
+            </nuxt-link>
             <b-button
               size="sm"
               variant="outline-primary"
@@ -86,12 +85,17 @@ export default {
   methods: {
     ...mapActions('list_house', {
       getList: 'LIST',
+      readHouse: 'READ_HOUSE',
     }),
     onEdit({ name, active, id }) {
       this.id = id
       this.form = { name, active }
       this.title = `Edit house: ${id}`
       this.modalShow = !this.modalShow
+    },
+    async onRead({ id }) {
+      this.$router()
+      await this.readHouse(id)
     },
     onRemove(editItem) {
       this.title = `Delete house: ${editItem.id}`
