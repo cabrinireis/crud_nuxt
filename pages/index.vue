@@ -4,7 +4,6 @@
       <b-col>
         <b-table
           :items="list"
-          :busy="loader"
           :per-page="configPagination.perPage"
           :current-page="configPagination.current_page"
           small
@@ -39,6 +38,7 @@
           aria-controls="my-table"
         ></b-pagination>
       </b-col>
+      <b-overlay :show="loader" no-wrap></b-overlay>
     </b-row>
     <b-modal v-model="modalShow" hide-footer :title="title">
       <HouseForm :id="id" :data="form" @closeModal="modalShow = !modalShow" />

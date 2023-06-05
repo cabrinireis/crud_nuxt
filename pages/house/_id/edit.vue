@@ -1,6 +1,7 @@
 <template>
   <div>
     <HouseForm v-if="!loading" :data="house" mode="edit" />
+    <b-overlay :show="loading" no-wrap></b-overlay>
   </div>
 </template>
 

@@ -1,29 +1,61 @@
 <template>
   <div>
-    <b-navbar toggleable type="dark" variant="dark">
-      <b-navbar-brand href="#">NavBar</b-navbar-brand>
-
-      <b-navbar-toggle target="navbar-toggle-collapse">
-        <template #default="{ expanded }">
-          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-          <b-icon v-else icon="chevron-bar-down"></b-icon>
-        </template>
-      </b-navbar-toggle>
-
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item href="#">Link 1</b-nav-item>
-          <b-nav-item href="#">Link 2</b-nav-item>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
+    <b-navbar toggleable type="dark" variant="dark" class="mb-5">
+      <b-navbar-brand href="#">Home roules</b-navbar-brand>
+      <b-button
+        type="reset"
+        class="mr-3"
+        variant="secondary"
+        @click="$router.push('/')"
+      >
+        Back
+      </b-button>
     </b-navbar>
+    <b-toast
+      id="notify"
+      :variant="notifyState"
+      :title="notifyTitle"
+      solid
+      @hidden="closeNotification"
+    >
+      {{ notifyMessage }}
+    </b-toast>
     <nuxt />
   </div>
 </template>
 
 <script>
-export default {}
+import { mapState, mapMutations } from 'Vuex'
+export default {
+  data() {
+    return {
+      notifyTitle: '',
+      notifyMessage: '',
+      notifyState: '',
+    }
+  },
+  computed: {
+    ...mapState('notification', ['notification']),
+  },
+
+  watch: {
+    notification([state, title, message]) {
+      if (state) this.$bvToast.show('notify')
+      this.notifyState = state
+      this.notifyTitle = title
+      this.notifyMessage = message
+    },
+  },
+
+  methods: {
+    ...mapMutations('notification', {
+      setNotification: 'SET_NOTIFICATION',
+    }),
+    closeNotification(event) {
+      if (event.type === 'hidden') this.setNotification([])
+    },
+  },
+}
 </script>
 
 <style></style>
