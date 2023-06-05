@@ -1,6 +1,17 @@
 <template>
   <b-container class="bv-example-row">
     <b-row>
+      <b-col class="d-flex justify-content-end mb-4">
+        <b-button
+          type="submit"
+          variant="primary"
+          @click="$router.push('/house/new')"
+        >
+          <b-icon-plus aria-hidden="true" class="mr-2"></b-icon-plus>Add
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col>
         <b-table
           :items="list"
@@ -36,7 +47,7 @@
       </b-col>
       <b-overlay :show="loader" no-wrap></b-overlay>
     </b-row>
-    <b-overlay :show="dialogDelete" no-wrap @shown="onShown" @hidden="onHidden">
+    <b-overlay :show="dialogDelete" no-wrap>
       <template #overlay>
         <div
           ref="dialog"

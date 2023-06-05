@@ -70,20 +70,25 @@ export default {
     this.form.active = 0
   },
   mounted() {
-    this.form = { ...this.data }
+    if (this.mode !== 'create') this.form = { ...this.data }
   },
   methods: {
     ...mapMutations('notification', {
       setNotification: 'SET_NOTIFICATION',
     }),
     ...mapActions('list_house', {
-      update: 'UPDATE_HOUSE',
+      updateHouse: 'UPDATE_HOUSE',
+      createHouse: 'CREATE_HOUSE',
     }),
     onClose() {
       this.$emit('closeModal')
     },
     async onSave() {
-      await this.update({ params: this.form, id: this.$route.params.id })
+      if (this.mode === 'edit') {
+        await this.updateHouse({ params: this.form, id: this.$route.params.id })
+      } else {
+        await this.createHouse(this.form)
+      }
     },
   },
 }

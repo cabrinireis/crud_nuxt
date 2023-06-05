@@ -6,9 +6,6 @@ export default {
       .then(({ data }) => {
         commit('SET_LIST', data)
       })
-      .catch((err) => {
-        console.log(err)
-      })
       .finally(() => {
         commit('SET_LOADING', false)
       })
@@ -24,7 +21,7 @@ export default {
       .then(() => {
         commit(
           'notification/SET_NOTIFICATION',
-          ['success', 'Sucesso', 'Cupom atualizado com sucesso'],
+          ['success', 'Success', 'Entities retrieved successfully.'],
           { root: true }
         )
         this.$router.push('/')
@@ -42,9 +39,6 @@ export default {
       .then(({ data }) => {
         if (data) commit('SET_HOUSE', data)
       })
-      .catch((err) => {
-        console.log(err)
-      })
       .finally(() => {
         commit('SET_LOADING', false)
       })
@@ -53,15 +47,15 @@ export default {
   async CREATE_HOUSE({ commit, dispatch }, params) {
     commit('SET_LOADING', true)
     await this.$axios
-      .post(
-        `/api/admin/house_rules/`,
-        (params = { house_rules: params.params })
-      )
-      .then(({ data }) => {
-        if (data) dispatch('LIST')
-      })
-      .catch((err) => {
-        console.log(err)
+      .post(`/api/admin/house_rules/`, (params = { house_rules: params }))
+      .then(() => {
+        commit(
+          'notification/SET_NOTIFICATION',
+          ['success', 'Success', 'Entities retrieved successfully.'],
+          { root: true }
+        )
+        this.$router.push('/')
+        dispatch('LIST')
       })
       .finally(() => {
         commit('SET_LOADING', false)
@@ -74,9 +68,6 @@ export default {
       .delete(`/api/admin/house_rules/${id}`)
       .then(({ data }) => {
         if (data) dispatch('LIST')
-      })
-      .catch((err) => {
-        console.log(err)
       })
       .finally(() => {
         commit('SET_LOADING', false)
