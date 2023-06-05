@@ -1,5 +1,5 @@
 export default {
-  async LIST({ commit }) {
+  async GET_HOUSES({ commit }) {
     commit('SET_LOADING', true)
     await this.$axios
       .get('/api/admin/house_rules')
@@ -25,7 +25,7 @@ export default {
           { root: true }
         )
         this.$router.push('/')
-        dispatch('LIST')
+        dispatch('GET_HOUSES')
       })
       .finally(() => {
         commit('SET_LOADING', false)
@@ -55,7 +55,7 @@ export default {
           { root: true }
         )
         this.$router.push('/')
-        dispatch('LIST')
+        dispatch('GET_HOUSES')
       })
       .finally(() => {
         commit('SET_LOADING', false)
@@ -66,8 +66,13 @@ export default {
     commit('SET_LOADING', true)
     await this.$axios
       .delete(`/api/admin/house_rules/${id}`)
-      .then(({ data }) => {
-        if (data) dispatch('LIST')
+      .then(() => {
+        commit(
+          'notification/SET_NOTIFICATION',
+          ['success', 'Success', 'Entity removed successfully.'],
+          { root: true }
+        )
+        dispatch('GET_HOUSES')
       })
       .finally(() => {
         commit('SET_LOADING', false)

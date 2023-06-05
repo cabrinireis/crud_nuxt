@@ -18,6 +18,7 @@
           :per-page="configPagination.perPage"
           :current-page="configPagination.current_page"
           small
+          show-empty
         >
           <template #table-busy>
             <div class="text-center text-danger my-2">
@@ -64,7 +65,7 @@
             <b-button variant="outline-danger" class="mr-3" @click="onCancel">
               Cancel
             </b-button>
-            <b-button variant="outline-success" @click="ConfirmeDelete"
+            <b-button variant="outline-success" @click="onConfirmeDelete"
               >OK</b-button
             >
           </div>
@@ -110,8 +111,9 @@ export default {
   },
   methods: {
     ...mapActions('list_house', {
-      getList: 'LIST',
+      getList: 'GET_HOUSES',
       readHouse: 'READ_HOUSE',
+      deleteHouse: 'DELETE_HOUSE',
     }),
     onEdit({ name, active, id }) {
       this.id = id
@@ -128,7 +130,13 @@ export default {
     },
     onRemove(removeItem) {
       this.dialogDelete = true
+      this.id = removeItem.id
       this.title = `Delete house: ${removeItem.id}`
+    },
+    async onConfirmeDelete() {
+      await this.deleteHouse(this.id)
+      this.dialogDelete = false
+      this.id = ''
     },
   },
 }
