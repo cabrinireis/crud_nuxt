@@ -22,13 +22,9 @@
             <nuxt-link :to="`house/${data.item.id}/edit`" class="mr-2">
               <b-icon-pencil aria-hidden="true"></b-icon-pencil>
             </nuxt-link>
-            <b-button
-              size="sm"
-              variant="outline-primary"
-              @click="onRemove(data.item)"
-            >
+            <b-link @click="onRemove(data.item)">
               <b-icon-trash aria-hidden="true"></b-icon-trash>
-            </b-button>
+            </b-link>
           </template>
         </b-table>
         <b-pagination
@@ -40,9 +36,30 @@
       </b-col>
       <b-overlay :show="loader" no-wrap></b-overlay>
     </b-row>
-    <b-modal v-model="modalShow" hide-footer :title="title">
-      <HouseForm :id="id" :data="form" @closeModal="modalShow = !modalShow" />
-    </b-modal>
+    <b-overlay :show="dialogDelete" no-wrap @shown="onShown" @hidden="onHidden">
+      <template #overlay>
+        <div
+          ref="dialog"
+          tabindex="-1"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="form-confirm-label"
+          class="text-center p-3"
+        >
+          <p>
+            <strong id="form-confirm-label">Are you sure {{ title }}?</strong>
+          </p>
+          <div>
+            <b-button variant="outline-danger" class="mr-3" @click="onCancel">
+              Cancel
+            </b-button>
+            <b-button variant="outline-success" @click="ConfirmeDelete"
+              >OK</b-button
+            >
+          </div>
+        </div>
+      </template>
+    </b-overlay>
   </b-container>
 </template>
 
@@ -50,13 +67,11 @@
 import { mapActions, mapState } from 'Vuex'
 
 export default {
-  components: {
-    HouseForm: () => import('@/components/FormHouse.vue'),
-  },
   data() {
     return {
       title: '',
       modalShow: false,
+      dialogDelete: false,
       id: '',
       form: {},
       configPagination: {
@@ -97,8 +112,12 @@ export default {
       this.$router()
       await this.readHouse(id)
     },
-    onRemove(editItem) {
-      this.title = `Delete house: ${editItem.id}`
+    onCancel() {
+      this.dialogDelete = false
+    },
+    onRemove(removeItem) {
+      this.dialogDelete = true
+      this.title = `Delete house: ${removeItem.id}`
     },
   },
 }
