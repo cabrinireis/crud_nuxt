@@ -41,6 +41,9 @@
         ></b-pagination>
       </b-col>
     </b-row>
+    <b-modal v-model="modalShow" hide-footer :title="title">
+      <HouseForm :data="form" @closeModal="modalShow = !modalShow" />
+    </b-modal>
   </b-container>
 </template>
 
@@ -48,15 +51,20 @@
 import { mapActions, mapState } from 'Vuex'
 
 export default {
+  components: {
+    HouseForm: () => import('@/components/FormHouse.vue'),
+  },
   data() {
     return {
+      title: '',
+      modalShow: false,
+      form: {},
       configPagination: {
         total: 1,
         count: 1,
         per_page: 1,
         current_page: 1,
         total_pages: 1,
-        links: { next: null, prev: null },
       },
     }
   },
@@ -79,10 +87,12 @@ export default {
       getList: 'LIST',
     }),
     onEdit(editItem) {
-      console.log(editItem)
+      this.form = editItem
+      this.title = `Edit house: ${editItem.id}`
+      this.modalShow = !this.modalShow
     },
     onRemove(editItem) {
-      console.log(editItem)
+      this.title = `Delete house: ${editItem.id}`
     },
   },
 }
