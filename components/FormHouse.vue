@@ -1,39 +1,36 @@
 <template>
-  <b-container class="bv-example-row">
+  <b-container v-if="true" class="bv-example-row">
     <b-row class="d-flex justify-content-center">
       <b-col cols="8">
-        <b-form-group id="input-group-1" label="Name:" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="form.name"
-            type="text"
-            required
-            :readonly="readonly"
-          ></b-form-input>
-        </b-form-group>
-        <b-form-group id="input-group-2" label="Active:" label-for="input-2">
-          <b-form-input
-            id="input-2"
-            v-model="form.active"
-            required
-            :readonly="readonly"
-          ></b-form-input>
-        </b-form-group>
-        <b-row>
-          <b-col v-if="!readonly" cols="12" class="d-flex justify-content-end">
-            <b-button
-              type="reset"
-              class="mr-3"
-              variant="secondary"
-              @click="onClose"
+        <b-form @submit="onSave">
+          <b-form-group id="name" label="Name:" label-for="name">
+            <b-form-input
+              id="name"
+              v-model="form.name"
+              type="text"
+              required
+              :readonly="readonly"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group id="active" label="Active:" label-for="active">
+            <b-form-input
+              id="active"
+              v-model="form.active"
+              type="number"
+              required
+              :readonly="readonly"
+            ></b-form-input>
+          </b-form-group>
+          <b-row>
+            <b-col
+              v-if="!readonly"
+              cols="12"
+              class="d-flex justify-content-end"
             >
-              Cancel
-            </b-button>
-            <b-button type="submit" variant="primary" @click.stop="onSave"
-              >Save</b-button
-            >
-          </b-col>
-        </b-row>
+              <b-button type="submit" variant="primary">Save</b-button>
+            </b-col>
+          </b-row>
+        </b-form>
       </b-col>
     </b-row>
   </b-container>
@@ -83,7 +80,8 @@ export default {
     onClose() {
       this.$emit('closeModal')
     },
-    async onSave() {
+    async onSave(event) {
+      event.preventDefault()
       if (this.mode === 'edit') {
         await this.updateHouse({ params: this.form, id: this.$route.params.id })
       } else {
