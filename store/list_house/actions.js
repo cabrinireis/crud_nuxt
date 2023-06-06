@@ -1,8 +1,17 @@
 export default {
-  async GET_HOUSES({ commit }) {
+  async GET_HOUSES({ commit }, page) {
     commit('SET_LOADING', true)
     await this.$axios
-      .get('/api/admin/house_rules')
+      .get(
+        `/api/admin/house_rules`,
+        page
+          ? {
+              params: {
+                page,
+              },
+            }
+          : ''
+      )
       .then(({ data }) => {
         commit('SET_LIST', data)
       })
@@ -55,7 +64,6 @@ export default {
           { root: true }
         )
         this.$router.push('/')
-        dispatch('GET_HOUSES')
       })
       .finally(() => {
         commit('SET_LOADING', false)

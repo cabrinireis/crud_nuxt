@@ -3,4 +3,5 @@ export default () => ({
   house: {},
   loading: false,
   pagination: {},
+  success: false,
 })

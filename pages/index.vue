@@ -41,10 +41,11 @@
         </b-table>
         <b-pagination
           v-model="configPagination.current_page"
-          :total-rows="list.length"
-          :per-page="configPagination.perPage"
-          aria-controls="my-table"
-        ></b-pagination>
+          :total-rows="configPagination.total"
+          :per-page="configPagination.per_page"
+          @change="changePage"
+        >
+        </b-pagination>
       </b-col>
       <b-overlay :show="loader" no-wrap></b-overlay>
     </b-row>
@@ -115,6 +116,9 @@ export default {
       readHouse: 'READ_HOUSE',
       deleteHouse: 'DELETE_HOUSE',
     }),
+    async changePage(page) {
+      await this.getList(page)
+    },
     onEdit({ name, active, id }) {
       this.id = id
       this.form = { name, active }

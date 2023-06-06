@@ -4,6 +4,7 @@ export default {
       el.actions = 'null'
       return el
     })
+    state.success = payload.success
     state.pagination = payload.data.pagination
   },
   SET_HOUSE(state, payload) {
